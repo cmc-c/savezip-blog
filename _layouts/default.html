@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'ko' }}">
+  {%- include head.html -%}
+  <body>
+    {%- include header.html -%}
+
+    <div class="cp-topbar">{{ site.coupang.disclosure }}</div>
+
+    {%- include coupang-widget.html slot="search" -%}
+
+    <main class="page-content cp-main" aria-label="Content">
+      <div class="wrapper cp-wrap">
+        <div class="cp-body">
+          {%- include coupang-widget.html slot="top_carousel" -%}
+          {{ content }}
+          {%- include coupang-widget.html slot="bottom_banner" -%}
+          {%- include coupang-categories.html -%}
+          {%- include coupang-promotions.html -%}
+        </div>
+        <aside class="cp-side">
+          {%- include coupang-widget.html slot="sidebar" -%}
+          <div class="cp-side-nav">
+            <h3 class="cp-h">카테고리</h3>
+            <ul>
+              {%- for c in site.coupang.categories -%}
+              <li><a href="{{ '/category/' | append: c.slug | append: '/' | relative_url }}">{{ c.name }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    {%- include footer.html -%}
+    {%- include coupang-disclosure.html -%}
+  </body>
+</html>

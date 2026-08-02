@@ -1,0 +1,20 @@
+{%- comment -%}
+위젯 하나를 렌더한다. id 가 없으면 아무것도 출력하지 않는다.
+사용: {% include coupang-widget.html slot="top_carousel" %}
+{%- endcomment -%}
+{%- assign w = site.coupang.widgets[include.slot] -%}
+{%- if w and w.id and w.id != "" -%}
+<div class="cp-widget cp-{{ include.slot }}">
+  <script src="https://ads-partners.coupang.com/g.js"></script>
+  <script>
+    new PartnersCoupang.G({
+      "id": {{ w.id }},
+      "template": "{{ w.template }}",
+      "trackingCode": "{{ site.coupang.tracking_code }}",
+      "subId": "blog-{{ include.slot }}",
+      "width": "{{ w.width }}",
+      "height": "{{ w.height }}"
+    });
+  </script>
+</div>
+{%- endif -%}

@@ -1,0 +1,28 @@
+{%- comment -%}카테고리 배너 묶음. id 있는 것만 렌더.{%- endcomment -%}
+{%- assign shown = 0 -%}
+{%- for c in site.coupang.categories -%}{%- if c.id and c.id != "" -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}{%- endfor -%}
+{%- if shown > 0 -%}
+<section class="cp-categories">
+  <h3 class="cp-h">카테고리별 인기 상품</h3>
+  <div class="cp-cat-grid">
+    {%- for c in site.coupang.categories -%}
+    {%- if c.id and c.id != "" -%}
+    <div class="cp-cat">
+      <div class="cp-cat-name">{{ c.name }}</div>
+      <script src="https://ads-partners.coupang.com/g.js"></script>
+      <script>
+        new PartnersCoupang.G({
+          "id": {{ c.id }},
+          "template": "carousel",
+          "trackingCode": "{{ site.coupang.tracking_code }}",
+          "subId": "blog-cat-{{ c.slug }}",
+          "width": "100%",
+          "height": "140"
+        });
+      </script>
+    </div>
+    {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
