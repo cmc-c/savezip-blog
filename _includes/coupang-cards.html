@@ -1,0 +1,25 @@
+{%- comment -%}
+API 로 가져온 상품 카드. 위젯 ID 없이 동작한다.
+사용: {% include coupang-cards.html items=... title="..." layout="row|grid" limit=8 %}
+{%- endcomment -%}
+{%- assign items = include.items -%}
+{%- if items and items.size > 0 -%}
+<section class="cp-cards {% if include.layout == 'row' %}cp-row{% else %}cp-grid{% endif %}-wrap">
+  {%- if include.title -%}<h3 class="cp-h">{{ include.title }}</h3>{%- endif -%}
+  <div class="{% if include.layout == 'row' %}cp-row{% else %}cp-grid{% endif %}">
+    {%- for it in items limit: include.limit | default: 8 -%}
+    <a class="cp-card" href="{{ it.url }}" target="_blank" rel="nofollow sponsored noopener">
+      <div class="cp-card-img"><img src="{{ it.image }}" alt="{{ it.name }}" loading="lazy"></div>
+      <div class="cp-card-body">
+        <div class="cp-card-name">{{ it.name }}</div>
+        <div class="cp-card-meta">
+          <span class="cp-card-price">{{ it.price }}원</span>
+          {%- if it.rocket %}<span class="cp-badge">로켓</span>{% endif -%}
+          {%- if it.discount and it.discount > 0 %}<span class="cp-badge cp-sale">{{ it.discount }}%</span>{% endif -%}
+        </div>
+      </div>
+    </a>
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}

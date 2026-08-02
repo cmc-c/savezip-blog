@@ -1,6 +1,6 @@
 {%- comment -%}
-위젯 하나를 렌더한다. id 가 없으면 아무것도 출력하지 않는다.
-사용: {% include coupang-widget.html slot="top_carousel" %}
+슬롯 하나를 렌더한다.
+파트너스 위젯 id 가 설정돼 있으면 위젯을, 없으면 API 상품 카드를 쓴다.
 {%- endcomment -%}
 {%- assign w = site.coupang.widgets[include.slot] -%}
 {%- if w and w.id and w.id != "" -%}
@@ -17,4 +17,17 @@
     });
   </script>
 </div>
+{%- elsif site.data.coupang -%}
+  {%- if include.slot == "sidebar" -%}
+    {%- include coupang-cards.html items=site.data.coupang.deals title="오늘의 특가" layout="grid" limit=4 -%}
+  {%- elsif include.slot == "top_carousel" -%}
+    {%- include coupang-cards.html items=site.data.coupang.deals layout="row" limit=8 -%}
+  {%- elsif include.slot == "bottom_banner" -%}
+    {%- assign cat = page.category_slug | default: "living" -%}
+    {%- for c in site.data.coupang.categories -%}
+      {%- if c.slug == cat -%}
+        {%- include coupang-cards.html items=c.items title="이런 것도 보고 있어요" layout="row" limit=8 -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
 {%- endif -%}

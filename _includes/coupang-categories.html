@@ -1,28 +1,28 @@
-{%- comment -%}카테고리 배너 묶음. id 있는 것만 렌더.{%- endcomment -%}
-{%- assign shown = 0 -%}
-{%- for c in site.coupang.categories -%}{%- if c.id and c.id != "" -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}{%- endfor -%}
-{%- if shown > 0 -%}
+{%- comment -%}카테고리 배너. 위젯 id 가 있으면 위젯, 없으면 API 카드.{%- endcomment -%}
 <section class="cp-categories">
   <h3 class="cp-h">카테고리별 인기 상품</h3>
-  <div class="cp-cat-grid">
-    {%- for c in site.coupang.categories -%}
-    {%- if c.id and c.id != "" -%}
-    <div class="cp-cat">
-      <div class="cp-cat-name">{{ c.name }}</div>
-      <script src="https://ads-partners.coupang.com/g.js"></script>
-      <script>
-        new PartnersCoupang.G({
-          "id": {{ c.id }},
-          "template": "carousel",
-          "trackingCode": "{{ site.coupang.tracking_code }}",
-          "subId": "blog-cat-{{ c.slug }}",
-          "width": "100%",
-          "height": "140"
-        });
-      </script>
+  {%- for c in site.coupang.categories -%}
+  <div class="cp-cat">
+    <div class="cp-cat-head">
+      <span class="cp-cat-name">{{ c.name }}</span>
+      <a class="cp-cat-more" href="{{ '/category/' | append: c.slug | append: '/' | relative_url }}">더보기 →</a>
     </div>
+    {%- if c.id and c.id != "" -%}
+    <script src="https://ads-partners.coupang.com/g.js"></script>
+    <script>
+      new PartnersCoupang.G({
+        "id": {{ c.id }}, "template": "carousel",
+        "trackingCode": "{{ site.coupang.tracking_code }}",
+        "subId": "blog-cat-{{ c.slug }}", "width": "100%", "height": "140"
+      });
+    </script>
+    {%- else -%}
+      {%- for d in site.data.coupang.categories -%}
+        {%- if d.slug == c.slug -%}
+          {%- include coupang-cards.html items=d.items layout="row" limit=8 -%}
+        {%- endif -%}
+      {%- endfor -%}
     {%- endif -%}
-    {%- endfor -%}
   </div>
+  {%- endfor -%}
 </section>
-{%- endif -%}

@@ -1,19 +1,20 @@
-{%- comment -%}이벤트·프로모션 링크. url 있는 것만.{%- endcomment -%}
+{%- comment -%}이벤트·프로모션. 설정된 링크 + 오늘의 특가.{%- endcomment -%}
 {%- assign shown = 0 -%}
 {%- for p in site.coupang.promotions -%}{%- if p.url and p.url != "" -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}{%- endfor -%}
 {%- if shown > 0 -%}
 <section class="cp-promos">
   <h3 class="cp-h">진행 중인 이벤트</h3>
   <div class="cp-promo-list">
-    {%- for p in site.coupang.promotions -%}
-    {%- if p.url and p.url != "" -%}
+    {%- for p in site.coupang.promotions -%}{%- if p.url and p.url != "" -%}
     <a class="cp-promo" href="{{ p.url }}" target="_blank" rel="nofollow sponsored noopener">
       <span class="cp-promo-emoji">{{ p.emoji }}</span>
       <span class="cp-promo-name">{{ p.name }}</span>
       <span class="cp-promo-go">바로가기 →</span>
     </a>
-    {%- endif -%}
-    {%- endfor -%}
+    {%- endif -%}{%- endfor -%}
   </div>
 </section>
+{%- endif -%}
+{%- if site.data.coupang.updated_at -%}
+<p class="cp-updated">상품 정보 갱신: {{ site.data.coupang.updated_at }} · 가격은 변동될 수 있습니다</p>
 {%- endif -%}
