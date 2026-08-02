@@ -21,7 +21,7 @@
   {%- if include.slot == "sidebar" -%}
     {%- include coupang-cards.html items=site.data.coupang.deals title="오늘의 특가" layout="grid" limit=4 -%}
   {%- elsif include.slot == "top_carousel" -%}
-    {%- include coupang-cards.html items=site.data.coupang.deals layout="row" limit=8 -%}
+    {%- include coupang-cards.html items=site.data.coupang.deals title="지금 많이 보는 특가" layout="row" limit=10 carousel=true -%}
   {%- elsif include.slot == "bottom_banner" -%}
     {%- assign cat = page.category_slug | default: "living" -%}
     {%- for c in site.data.coupang.categories -%}
@@ -29,5 +29,7 @@
         {%- include coupang-cards.html items=c.items title="이런 것도 보고 있어요" layout="row" limit=8 -%}
       {%- endif -%}
     {%- endfor -%}
+  {%- elsif include.slot == "search" -%}
+    {%- include coupang-search.html -%}
   {%- endif -%}
 {%- endif -%}

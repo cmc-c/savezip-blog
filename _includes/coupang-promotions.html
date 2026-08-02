@@ -1,9 +1,9 @@
-{%- comment -%}이벤트·프로모션. 설정된 링크 + 오늘의 특가.{%- endcomment -%}
+{%- comment -%}설정된 이벤트 링크와 공식 API의 오늘의 특가 상품을 함께 노출한다.{%- endcomment -%}
 {%- assign shown = 0 -%}
 {%- for p in site.coupang.promotions -%}{%- if p.url and p.url != "" -%}{%- assign shown = shown | plus: 1 -%}{%- endif -%}{%- endfor -%}
-{%- if shown > 0 -%}
+{%- if shown > 0 or site.data.coupang.deals.size > 0 -%}
 <section class="cp-promos">
-  <h3 class="cp-h">진행 중인 이벤트</h3>
+  <h3 class="cp-h">오늘의 특가·프로모션</h3>
   <div class="cp-promo-list">
     {%- for p in site.coupang.promotions -%}{%- if p.url and p.url != "" -%}
     <a class="cp-promo" href="{{ p.url }}" target="_blank" rel="nofollow sponsored noopener">
@@ -12,6 +12,14 @@
       <span class="cp-promo-go">바로가기 →</span>
     </a>
     {%- endif -%}{%- endfor -%}
+    {%- for item in site.data.coupang.deals limit:4 -%}
+    <a class="cp-promo cp-promo-product" href="{{ item.url }}" target="_blank" rel="nofollow sponsored noopener">
+      <img src="{{ item.image }}" alt="" loading="lazy">
+      <span class="cp-promo-name">{{ item.name }}</span>
+      <span class="cp-promo-price" data-price="{{ item.price }}">{{ item.price }}원</span>
+      <span class="cp-promo-go">보기 →</span>
+    </a>
+    {%- endfor -%}
   </div>
 </section>
 {%- endif -%}
