@@ -172,3 +172,11 @@
   font-size: 10.5px; color: #a1a1aa; margin-bottom: 3px;
   overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
 }
+
+.cp-buy {
+  display: inline-block; margin: 8px 0 4px;
+  padding: 12px 22px; border-radius: 8px;
+  background: #111; color: #fff !important; font-weight: 600; font-size: 15px;
+  text-decoration: none !important;
+}
+.cp-buy:hover { background: #333; }
