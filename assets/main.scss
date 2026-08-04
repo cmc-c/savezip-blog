@@ -23,6 +23,15 @@
 
 .cp-widget { margin: 24px 0; overflow: hidden; }
 
+// 쿠팡 위젯은 iframe 을 <ins> 로 감싼다. <ins> 는 인라인이라 폭이 0 으로
+// 접히고, iframe width="100%" 도 따라서 0 이 된다 — 위젯이 안 보였다.
+.cp-widget, .cp-cat {
+  ins { display: block; width: 100%; }
+  iframe { display: block; width: 100%; border: 0; }
+}
+// 사이드바는 300px 고정 위젯이라 늘리지 않는다.
+.cp-sidebar { ins, iframe { max-width: 300px; } }
+
 .cp-h {
   font-size: 15px;
   font-weight: 700;
