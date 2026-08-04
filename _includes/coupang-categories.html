@@ -1,27 +1,36 @@
-{%- comment -%}카테고리 배너. 위젯 id 가 있으면 위젯, 없으면 API 카드.{%- endcomment -%}
+{%- comment -%}
+카테고리 배너. 위젯 id 가 있으면 위젯을 쓰고, API 카드를 hidden 으로 같이
+내보낸다 — 광고 차단 확장이 위젯 스크립트를 지우는 경우를 위한 폴백이다.
+{%- endcomment -%}
 <section class="cp-categories">
   <h3 class="cp-h">카테고리별 인기 상품</h3>
   {%- for c in site.coupang.categories -%}
-  <div class="cp-cat">
+  <div class="cp-cat"{% if c.id and c.id != "" %} data-widget-slot{% endif %}>
     <div class="cp-cat-head">
       <span class="cp-cat-name">{{ c.name }}</span>
       <a class="cp-cat-more" href="{{ '/category/' | append: c.slug | append: '/' | relative_url }}">더보기 →</a>
     </div>
-    {%- if c.id and c.id != "" -%}
-    <script src="https://ads-partners.coupang.com/g.js"></script>
-    <script>
-      new PartnersCoupang.G({
-        "id": {{ c.id }}, "template": "carousel",
-        "trackingCode": "{{ site.coupang.tracking_code }}",
-        "subId": "blog-cat-{{ c.slug }}", "width": "100%", "height": "140"
-      });
-    </script>
-    {%- else -%}
+
+    {%- capture fallback -%}
       {%- for d in site.data.coupang.categories -%}
         {%- if d.slug == c.slug -%}
           {%- include coupang-cards.html items=d.items layout="row" limit=8 -%}
         {%- endif -%}
       {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if c.id and c.id != "" -%}
+    <script src="https://ads-partners.coupang.com/g.js"></script>
+    <script>
+      if (window.PartnersCoupang) new PartnersCoupang.G({
+        "id": {{ c.id }}, "template": "carousel",
+        "trackingCode": "{{ site.coupang.tracking_code }}",
+        "subId": "blog-cat-{{ c.slug }}", "width": "100%", "height": "140"
+      });
+    </script>
+    <div data-widget-fallback hidden>{{ fallback }}</div>
+    {%- else -%}
+    {{ fallback }}
     {%- endif -%}
   </div>
   {%- endfor -%}

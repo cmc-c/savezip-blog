@@ -1,13 +1,37 @@
 {%- comment -%}
 슬롯 하나를 렌더한다.
-파트너스 위젯 id 가 설정돼 있으면 위젯을, 없으면 API 상품 카드를 쓴다.
+
+파트너스 위젯 id 가 있으면 위젯을 쓰되, API 상품 카드를 hidden 으로 같이
+내보낸다. 광고 차단 확장은 ads-partners.coupang.com 스크립트를 통째로
+제거하므로(실측: script 태그 자체가 사라진다) 위젯만 믿으면 그 사용자에게는
+페이지가 빈다. coupang.js 가 iframe 유무를 보고 카드로 되돌린다.
 {%- endcomment -%}
 {%- assign w = site.coupang.widgets[include.slot] -%}
+
+{%- capture fallback -%}
+  {%- if site.data.coupang -%}
+    {%- if include.slot == "sidebar" -%}
+      {%- include coupang-cards.html items=site.data.coupang.deals title="오늘의 특가" layout="grid" limit=4 -%}
+    {%- elsif include.slot == "top_carousel" -%}
+      {%- include coupang-cards.html items=site.data.coupang.deals title="지금 많이 보는 특가" layout="row" limit=10 carousel=true -%}
+    {%- elsif include.slot == "bottom_banner" -%}
+      {%- assign cat = page.category_slug | default: "living" -%}
+      {%- for c in site.data.coupang.categories -%}
+        {%- if c.slug == cat -%}
+          {%- include coupang-cards.html items=c.items title="이런 것도 보고 있어요" layout="row" limit=8 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- elsif include.slot == "search" -%}
+      {%- include coupang-search.html -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
 {%- if w and w.id and w.id != "" -%}
-<div class="cp-widget cp-{{ include.slot }}">
+<div class="cp-widget cp-{{ include.slot }}" data-widget-slot>
   <script src="https://ads-partners.coupang.com/g.js"></script>
   <script>
-    new PartnersCoupang.G({
+    if (window.PartnersCoupang) new PartnersCoupang.G({
       "id": {{ w.id }},
       "template": "{{ w.template }}",
       "trackingCode": "{{ site.coupang.tracking_code }}",
@@ -16,20 +40,8 @@
       "height": "{{ w.height }}"
     });
   </script>
+  <div data-widget-fallback hidden>{{ fallback }}</div>
 </div>
-{%- elsif site.data.coupang -%}
-  {%- if include.slot == "sidebar" -%}
-    {%- include coupang-cards.html items=site.data.coupang.deals title="오늘의 특가" layout="grid" limit=4 -%}
-  {%- elsif include.slot == "top_carousel" -%}
-    {%- include coupang-cards.html items=site.data.coupang.deals title="지금 많이 보는 특가" layout="row" limit=10 carousel=true -%}
-  {%- elsif include.slot == "bottom_banner" -%}
-    {%- assign cat = page.category_slug | default: "living" -%}
-    {%- for c in site.data.coupang.categories -%}
-      {%- if c.slug == cat -%}
-        {%- include coupang-cards.html items=c.items title="이런 것도 보고 있어요" layout="row" limit=8 -%}
-      {%- endif -%}
-    {%- endfor -%}
-  {%- elsif include.slot == "search" -%}
-    {%- include coupang-search.html -%}
-  {%- endif -%}
+{%- else -%}
+{{ fallback }}
 {%- endif -%}

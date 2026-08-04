@@ -126,9 +126,29 @@
     }
   }
 
+  // 광고 차단 확장은 ads-partners.coupang.com 스크립트를 통째로 제거한다
+  // (실측: script 태그 자체가 DOM 에서 사라지고 PartnersCoupang 이 undefined).
+  // 그러면 위젯 슬롯이 빈 채로 남으므로 자체 상품 카드를 대신 띄운다.
+  function reviveBlockedWidgets() {
+    let revived = 0;
+    document.querySelectorAll("[data-widget-slot]").forEach(function (slot) {
+      if (slot.querySelector("iframe")) return;  // 위젯이 떴다
+      const fb = slot.querySelector("[data-widget-fallback]");
+      if (!fb || !fb.hidden) return;
+      fb.hidden = false;
+      revived += 1;
+      formatPrices(fb);
+      fb.querySelectorAll("[data-carousel]").forEach(setupCarousel);
+    });
+    return revived;
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     formatPrices(document);
     document.querySelectorAll("[data-product-search]").forEach(setupSearch);
     document.querySelectorAll("[data-carousel]").forEach(setupCarousel);
+    // 위젯 iframe 이 붙을 시간을 준 뒤 판정한다.
+    window.setTimeout(reviveBlockedWidgets, 1500);
+    window.setTimeout(reviveBlockedWidgets, 4000);
   });
 }());
