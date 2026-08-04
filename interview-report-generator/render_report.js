@@ -242,11 +242,7 @@ children.push(para([
   run("X: 새로 준비 필요 (입사 후 학습 영역)", { size: 17, color: C.point, bold: true }),
 ], { before: 60, after: 60 }));
 
-children.push(h2("1-2. 자소서 보완 포인트"));
-children.push(simpleTable(data.step1.jasoseo_points.columns, data.step1.jasoseo_points.rows, [1900, 7126], { headerFill: C.sub }));
-children.push(spacer());
-
-children.push(h2("1-3. 서류 간 체크 포인트"));
+children.push(h2("1-2. 서류 간 체크 포인트"));
 children.push(simpleTable(data.step1.cross_check.columns, data.step1.cross_check.rows, [2400, 6626], { headerFill: C.sub }));
 children.push(spacer());
 
