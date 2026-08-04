@@ -25,17 +25,17 @@ coupang:
 
   widgets:
     top_carousel:      # 글 상단 가로 캐러셀
-      id:
+      id: 1013088
       template: carousel
       width: "100%"
       height: "140"
     bottom_banner:     # 글 하단 관련 상품
-      id:
+      id: 1013089
       template: carousel
       width: "100%"
       height: "140"
     sidebar:           # 사이드바 세로형
-      id:
+      id: 1013090
       template: banner
       width: "300"
       height: "250"
@@ -49,25 +49,29 @@ coupang:
   categories:
     - name: 패션·의류
       slug: fashion
-      id:
+      id: 1013091
     - name: 뷰티
       slug: beauty
-      id:
+      id: 1013092
     - name: 생활용품
       slug: living
-      id:
+      id: 1013093
     - name: 식품
       slug: food
-      id:
-
-  # 이벤트·프로모션 — 파트너스에서 발급한 링크를 넣는다. url 이 비면 표시 안 함.
+      id: 1013094
+  # 이벤트·프로모션 — 파트너스 딥링크 API 로 변환한 링크만 넣는다.
+  # 캠페인 페이지 대부분(와우딜/로켓직구/특가관)은 "url convert failed" 로
+  # 제휴 대상이 아니다. 검색 URL 은 변환된다.
   promotions:
     - name: 골드박스 오늘의 특가
       emoji: "🎁"
-      url:
+      url: https://link.coupang.com/a/fVDASGy2sm
     - name: 로켓배송 베스트
       emoji: "🚀"
-      url:
-    - name: 와우 전용딜
-      emoji: "💜"
-      url:
+      url: https://link.coupang.com/a/fVDATvQiA0
+    - name: 여성 패션 위클리
+      emoji: "👗"
+      url: https://link.coupang.com/a/fVDAUgXIbI
+    - name: 남성 패션 위클리
+      emoji: "🧥"
+      url: https://link.coupang.com/a/fVDAUYibCu
