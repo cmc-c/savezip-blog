@@ -2,6 +2,7 @@ title: 세이브집
 description: 집에서 써먹을 만한 것만 모아둡니다. 생활템·자취템 큐레이션.
 theme: minima
 lang: ko
+timezone: Asia/Seoul
 permalink: /:year/:month/:day/:title/
 plugins:
   - jekyll-feed
