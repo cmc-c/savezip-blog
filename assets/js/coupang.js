@@ -143,10 +143,23 @@
     return revived;
   }
 
+  function setupOutboundTracking() {
+    document.addEventListener("click", function (event) {
+      const link = event.target.closest("[data-coupang-click]");
+      if (!link || typeof window.gtag !== "function") return;
+      window.gtag("event", "coupang_outbound_click", {
+        funnel_key: link.dataset.funnelKey || "",
+        product_id: link.dataset.productId || "",
+        transport_type: "beacon"
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     formatPrices(document);
     document.querySelectorAll("[data-product-search]").forEach(setupSearch);
     document.querySelectorAll("[data-carousel]").forEach(setupCarousel);
+    setupOutboundTracking();
     // 위젯 iframe 이 붙을 시간을 준 뒤 판정한다.
     window.setTimeout(reviveBlockedWidgets, 1500);
     window.setTimeout(reviveBlockedWidgets, 4000);

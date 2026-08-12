@@ -6,17 +6,24 @@
 
     <div class="cp-topbar">{{ site.coupang.disclosure }}</div>
 
-    {%- include coupang-widget.html slot="search" -%}
+    {%- unless page.conversion_page -%}
+      {%- include coupang-widget.html slot="search" -%}
+    {%- endunless -%}
 
     <main class="page-content cp-main" aria-label="Content">
       <div class="wrapper cp-wrap">
         <div class="cp-body">
-          {%- include coupang-widget.html slot="top_carousel" -%}
+          {%- unless page.conversion_page -%}
+            {%- include coupang-widget.html slot="top_carousel" -%}
+          {%- endunless -%}
           {{ content }}
-          {%- include coupang-widget.html slot="bottom_banner" -%}
-          {%- include coupang-categories.html -%}
-          {%- include coupang-promotions.html -%}
+          {%- unless page.conversion_page -%}
+            {%- include coupang-widget.html slot="bottom_banner" -%}
+            {%- include coupang-categories.html -%}
+            {%- include coupang-promotions.html -%}
+          {%- endunless -%}
         </div>
+        {%- unless page.conversion_page -%}
         <aside class="cp-side">
           {%- include coupang-widget.html slot="sidebar" -%}
           <div class="cp-side-nav">
@@ -28,6 +35,7 @@
             </ul>
           </div>
         </aside>
+        {%- endunless -%}
       </div>
     </main>
 
